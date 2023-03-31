@@ -1332,6 +1332,7 @@ class GuiProgram(whodunargs.StandardProgram):
 		self.name = "guip"
 		self.summary = "Show a helpful gui for a program."
 		self.usage = "python3 guip --prog EXE --arg ARG"
+		self.description = "Build a gui to pick arguments for a program, then run.\nMacOS: The default python has a busted tkinter. Reinstall from python.org."
 		commonProgSetup(self)
 	def idiotCheck(self):
 		if len(self.strOpt.value) == 0:
@@ -1346,6 +1347,7 @@ class GuiSetProgram(whodunargs.StandardProgram):
 		whodunargs.StandardProgram.__init__(self)
 		self.name = "guis"
 		self.summary = "Show a helpful gui for a program set."
+		self.description = "Build a gui to pick arguments for a set of programs, then run.\nMacOS: The default python has a busted tkinter. Reinstall from python.org."
 		self.usage = "python3 guis --prog EXE --arg ARG"
 		commonProgSetup(self)
 	def idiotCheck(self):

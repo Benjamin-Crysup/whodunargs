@@ -139,7 +139,9 @@ Generate latex documentation for a program set\.
 
 # guip
 
-Show a helpful gui for a program\.
+Build a gui to pick arguments for a program, then run\.
+
+MacOS: The default python has a busted tkinter\. Reinstall from python\.org\.
 
 - \-\-prog python3
 
@@ -151,7 +153,9 @@ Show a helpful gui for a program\.
 
 # guis
 
-Show a helpful gui for a program set\.
+Build a gui to pick arguments for a set of programs, then run\.
+
+MacOS: The default python has a busted tkinter\. Reinstall from python\.org\.
 
 - \-\-prog python3
 
@@ -159,4 +163,5 @@ Show a helpful gui for a program set\.
 - \-\-arg WDAExample\.py
 
     Any required arguments to the program\.
+
 
