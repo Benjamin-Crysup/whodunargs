@@ -42,7 +42,7 @@ The figure shows an example of such a GUI for a utility for generating a confusi
 
 ![An example GUI generated using whodunargs.](guiex.png)
 
-whodunargs can also produce various types of documentation: building documentation automatically can minimize any differences with program behavior.
+whodunargs can also produce various types of documentation: building documentation automatically can minimize any differences with program behavior (especially if multiple different varieties of documentation are required).
 Note that the main documentation on Github was produced in this manner.
 
 # References
