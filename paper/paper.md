@@ -43,7 +43,7 @@ The figure shows an example of such a GUI for a utility for generating a confusi
 ![An example GUI generated using whodunargs.](guiex.png)
 
 whodunargs can also produce various types of documentation: building documentation automatically can minimize any differences with program behavior (especially if multiple different varieties of documentation are required).
-Note that the main documentation on Github was produced in this manner.
+GUIs and manpages were built for a sequence realigner [@crysup2021proderal] and a read merger [@crysup2022prosynar] using a prototype of this system, and whodunargs is self-documenting (note that the main documentation on Github was produced using whodunargs).
 
 # References
 
