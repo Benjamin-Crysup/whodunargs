@@ -141,7 +141,7 @@ Generate latex documentation for a program set\.
 
 Build a gui to pick arguments for a program, then run\.
 
-MacOS: The default python has a busted tkinter\. Reinstall from python\.org\.
+Make sure your version of python has a working version of tkinter\.
 
 - \-\-prog python3
 
@@ -155,7 +155,7 @@ MacOS: The default python has a busted tkinter\. Reinstall from python\.org\.
 
 Build a gui to pick arguments for a set of programs, then run\.
 
-MacOS: The default python has a busted tkinter\. Reinstall from python\.org\.
+Make sure your version of python has a working version of tkinter\.
 
 - \-\-prog python3
 
