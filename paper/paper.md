@@ -10,7 +10,7 @@ authors:
 	corresponding: true
     affiliation: 1
 affiliations:
-  - name : University of North Texas Health Science Center
+  - name : University of North Texas Health Science Center, Center for Human Identification and Department of Microbiology, Immunology and Genetics
     index: 1
 date: 11 March 2023
 bibliography: paper.bib
@@ -22,16 +22,16 @@ bibliography: paper.bib
 whodunargs is two pieces.
 The first is a library for the specification and parsing of command line arguments.
 The second piece is a tool to take that specification and automatically perform several tasks.
-The most important task is generating and displaying a GUI to allow less-technical users to use scientific software.
+The most important task is generating and displaying a GUI to empower less-technical users to use scientific software.
 
 # Statement of need
 
 There are many pros to a command line interface: it excels at tasks requiring automation, and skilled users can use it to very quickly achieve their goals.
 However, GUIs have dominated the landscape of personal computing for over 25 years: there are many potential users of scientific software for whom the command line is wholly foreign.
-Moreover, even among more technical users, navigating the documentation of an unfamiliar tool can prove surprisingly challenging (especially if English is not your native tongue).
+Moreover, even among more technical users, navigating the documentation of an unfamiliar tool can prove surprisingly challenging (especially if English is not your native language).
 A GUI can be a useful fallback.
 
-It's easy to say all software should have a GUI: however, there are several challenges to doing so.
+It is easy to say all software should have a GUI: however, there are several challenges to doing so.
 First, GUI programming invokes a set of paradigms with which many (even many excellent) programmers are unfamiliar.
 Second, many important programming languages (C) do not come with GUI support in their standard library, requiring either linking with an external library or writing platform specific code ([@microsoft1992microsoft],[@scheifler1986x]).
 Third and, perhaps most importantly, adding GUI support to a program requires effort that is typically tangential to the main goals of the software.
@@ -43,7 +43,7 @@ The figure shows an example of such a GUI for a utility for generating a confusi
 ![An example GUI generated using whodunargs.](guiex.png)
 
 whodunargs can also produce various types of documentation: building documentation automatically can minimize any differences with program behavior (especially if multiple different varieties of documentation are required).
-GUIs and manpages were built for a sequence realigner [@crysup2021proderal] and a read merger [@crysup2022prosynar] using a prototype of this system, and whodunargs is self-documenting (note that the main documentation on Github was produced using whodunargs).
+GUIs and manpages were built for a sequence realigner [@crysup2021proderal] and a read merger [@crysup2022prosynar] using a prototype of this system, and whodunargs is self-documenting (note that the main documentation for whodunargs on Github was produced using whodunargs).
 
 # References
 
