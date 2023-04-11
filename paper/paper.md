@@ -8,10 +8,12 @@ authors:
   - name: Benjamin Crysup
     orcid: 0000-0002-2593-2280
     corresponding: true
-    affiliation: 1
+    affiliation: "1, 2"
 affiliations:
-  - name : University of North Texas Health Science Center, Center for Human Identification and Department of Microbiology, Immunology and Genetics
+  - name : Center for Human Identification, University of North Texas Health Science Center
     index: 1
+  - name : Department of Microbiology, Immunology and Genetics, University of North Texas Health Science Center
+    index: 2
 date: 11 March 2023
 bibliography: paper.bib
 
