@@ -451,6 +451,111 @@ class ArgumentOptionStringVector(ArgumentOptionNamed):
 		return forArgs[2:]
 
 
+class ArgumentOptionIntegerGreedyVector(ArgumentOptionNamed):
+	'''Set an integer value until no more integers found.'''
+	def __init__(self,baseArg,repName,sumText,useText):
+		'''
+		Set up an option.
+		@param baseArg: The common sigil for this argument.
+		@param repName: The reporting name of this option.
+		@param sumText: A summary of this option.
+		@param useText: An example usage.
+		'''
+		ArgumentOptionNamed.__init__(self)
+		self.name = repName
+		self.sigils = [baseArg]
+		self.summary = sumText
+		self.usage = useText
+		self.typeCode = "intvecg"
+		self.extTypeCode = ""
+		self.value = []
+		'''The value of the integer.'''
+	def parse(self, forArgs, forProg):
+		for i in range(1,len(forArgs)):
+			try:
+				addV = int(forArgs[i])
+				self.value.append(addV)
+			except ValueError as e:
+				return forArgs[i:]
+		return []
+
+
+class ArgumentOptionFloatGreedyVector(ArgumentOptionNamed):
+	'''Set a float value until no more floats found.'''
+	def __init__(self,baseArg,repName,sumText,useText):
+		'''
+		Set up an option.
+		@param baseArg: The common sigil for this argument.
+		@param repName: The reporting name of this option.
+		@param sumText: A summary of this option.
+		@param useText: An example usage.
+		'''
+		ArgumentOptionNamed.__init__(self)
+		self.name = repName
+		self.sigils = [baseArg]
+		self.summary = sumText
+		self.usage = useText
+		self.typeCode = "floatvecg"
+		self.extTypeCode = ""
+		self.value = []
+		'''The value of the float.'''
+	def parse(self, forArgs, forProg):
+		for i in range(1,len(forArgs)):
+			try:
+				addV = float(forArgs[i])
+				self.value.append(addV)
+			except ValueError as e:
+				return forArgs[i:]
+		return []
+
+
+class ArgumentOptionStringGreedyVector(ArgumentOptionNamed):
+	'''Set a string value until -- found.'''
+	def __init__(self,baseArg,repName,sumText,useText):
+		'''
+		Set up an option.
+		@param baseArg: The common sigil for this argument.
+		@param repName: The reporting name of this option.
+		@param sumText: A summary of this option.
+		@param useText: An example usage.
+		'''
+		ArgumentOptionNamed.__init__(self)
+		self.name = repName
+		self.sigils = [baseArg]
+		self.summary = sumText
+		self.usage = useText
+		self.typeCode = "stringvecg"
+		self.extTypeCode = ""
+		self.value = []
+		'''The value of the string.'''
+	def parse(self, forArgs, forProg):
+		for i in range(1,len(forArgs)):
+			curA = forArgs[i]
+			if (i>1) and (len(curA) >= 2) and (curA[0] == '-') and (curA[1] == '-'):
+				return forArgs[i:]
+			self.value.append(curA)
+		return []
+
+
+class ArgumentOptionNull(ArgumentOption):
+	'''Ignored option.'''
+	def __init__(self):
+		'''
+		Set up a help option.
+		'''
+		ArgumentOption.__init__(self)
+		self.isCommon = False
+		self.name = "Null"
+		self.sigils = ["--.-"]
+		self.summary = "Ignored option."
+		self.typeCode = "meta"
+		self.extTypeCode = ""
+	def canParse(self, forArgs):
+		return (forArgs[0] == "--.-")
+	def parse(self, forArgs, forProg):
+		return forArgs[1:]
+
+
 class ArgumentOptionThreadcount(ArgumentOptionInteger):
 	'''The number of threads to spin up.'''
 	def __init__(self):
@@ -600,6 +705,50 @@ class ArgumentOptionFileWriteVector(ArgumentOptionStringVector):
 		_dumpFileIOItems(self, toStr, False)
 
 
+class ArgumentOptionFileReadGreedyVector(ArgumentOptionStringGreedyVector):
+	'''Read a file.'''
+	def __init__(self, baseArg,repName,sumText,useText):
+		'''
+		Set up a file read option.
+		@param baseArg: The common sigil for this argument.
+		@param repName: The reporting name of this option.
+		@param sumText: A summary of this option.
+		@param useText: An example usage.
+		'''
+		ArgumentOptionStringGreedyVector.__init__(self,baseArg,repName,sumText,useText)
+		self.extTypeCode = "fileread"
+		self.validExts = set()
+		'''The valid extensions for this option.'''
+	def dumpInfo(self,toStr):
+		'''
+		Dump packed info on this thing.
+		@param toStr: The stream to write to.
+		'''
+		_dumpFileIOItems(self, toStr, False)
+
+
+class ArgumentOptionFileWriteGreedyVector(ArgumentOptionStringGreedyVector):
+	'''Read a file.'''
+	def __init__(self, baseArg,repName,sumText,useText):
+		'''
+		Set up a file read option.
+		@param baseArg: The common sigil for this argument.
+		@param repName: The reporting name of this option.
+		@param sumText: A summary of this option.
+		@param useText: An example usage.
+		'''
+		ArgumentOptionStringGreedyVector.__init__(self,baseArg,repName,sumText,useText)
+		self.extTypeCode = "filewrite"
+		self.validExts = set()
+		'''The valid extensions for this option.'''
+	def dumpInfo(self,toStr):
+		'''
+		Dump packed info on this thing.
+		@param toStr: The stream to write to.
+		'''
+		_dumpFileIOItems(self, toStr, False)
+
+
 class ArgumentOptionFolderRead(ArgumentOptionString):
 	'''Read a file.'''
 	def __init__(self, baseArg,repName,sumText,useText):
@@ -713,6 +862,7 @@ class StandardProgram:
 		except Exception as e:
 			self.wasError = True
 			self.useErr.write(bytes(str(e)+"\n","utf-8"))
+			raise
 	def baseRun(self):
 		'''
 		Actually do the thing.

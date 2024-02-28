@@ -255,6 +255,31 @@ class ArgumentFlavorIntVec(ArgumentFlavor):
 		return toRet
 
 
+class ArgumentFlavorIntGreedVec(ArgumentFlavor):
+	def manpageSynopMang(self,argD):
+		return "[\\fB" + manSan(argD.sigils[0]) + "\\fR \\fI###*\\fR]"
+	def makeArgGUI(self,forGui,argD):
+		theNam = tkinter.Label(forGui.myCanvas, text = argD.name)
+		theNam.grid(column = 0, row = forGui.gridR)
+		theLab = tkinter.Label(forGui.myCanvas, text = argD.summary)
+		theLab.grid(column = 3, row = forGui.gridR)
+		forGui.gridR = forGui.gridR + 1
+		theBox = tkinter.scrolledtext.ScrolledText(forGui.myCanvas, height = 4, width = 40)
+		theBox.grid(column = 0, row = forGui.gridR, columnspan = 2, rowspan = 4)
+		forGui.gridR = forGui.gridR + 4
+		forGui.argPassFlavs.append(self)
+		forGui.argPassCaps.append([argD, theNam, theBox, theLab])
+	def getGUIArgTexts(self,forGui,forData):
+		toRet = []
+		curRetOpts = forData[2].get('1.0', tkinter.END).split("\n")
+		toRet.append(forData[0].sigils[0])
+		for cv in curRetOpts:
+			if len(cv.strip()) == 0:
+				continue
+			toRet.append(cv.strip())
+		return toRet
+
+
 class ArgumentFlavorFloat(ArgumentFlavor):
 	def manpageSynopMang(self,argD):
 		return "\\fB" + manSan(argD.sigils[0]) + "\\fR \\fI###.###\\fR"
@@ -301,6 +326,31 @@ class ArgumentFlavorFloatVec(ArgumentFlavor):
 			if len(cv.strip()) == 0:
 				continue
 			toRet.append(forData[0].sigils[0])
+			toRet.append(cv.strip())
+		return toRet
+
+
+class ArgumentFlavorFloatGreedVec(ArgumentFlavor):
+	def manpageSynopMang(self,argD):
+		return "[\\fB" + manSan(argD.sigils[0]) + "\\fR \\fI###.###*\\fR]"
+	def makeArgGUI(self,forGui,argD):
+		theNam = tkinter.Label(forGui.myCanvas, text = argD.name)
+		theNam.grid(column = 0, row = forGui.gridR)
+		theLab = tkinter.Label(forGui.myCanvas, text = argD.summary)
+		theLab.grid(column = 3, row = forGui.gridR)
+		forGui.gridR = forGui.gridR + 1
+		theBox = tkinter.scrolledtext.ScrolledText(forGui.myCanvas, height = 4, width = 40)
+		theBox.grid(column = 0, row = forGui.gridR, columnspan = 2, rowspan = 4)
+		forGui.gridR = forGui.gridR + 4
+		forGui.argPassFlavs.append(self)
+		forGui.argPassCaps.append([argD, theNam, theBox, theLab])
+	def getGUIArgTexts(self,forGui,forData):
+		toRet = []
+		curRetOpts = forData[2].get('1.0', tkinter.END).split("\n")
+		toRet.append(forData[0].sigils[0])
+		for cv in curRetOpts:
+			if len(cv.strip()) == 0:
+				continue
 			toRet.append(cv.strip())
 		return toRet
 
@@ -353,6 +403,42 @@ class ArgumentFlavorStringVec(ArgumentFlavor):
 				continue
 			toRet.append(forData[0].sigils[0])
 			toRet.append(cv.strip())
+		return toRet
+
+
+class ArgumentFlavorStringGreedVec(ArgumentFlavor):
+	def manpageSynopMang(self,argD):
+		return "[\\fB" + manSan(argD.sigils[0]) + "\\fR \\fITEXT*\\fR]"
+	def makeArgGUI(self,forGui,argD):
+		theNam = tkinter.Label(forGui.myCanvas, text = argD.name)
+		theNam.grid(column = 0, row = forGui.gridR)
+		theLab = tkinter.Label(forGui.myCanvas, text = argD.summary)
+		theLab.grid(column = 3, row = forGui.gridR)
+		forGui.gridR = forGui.gridR + 1
+		theBox = tkinter.scrolledtext.ScrolledText(forGui.myCanvas, height = 4, width = 40)
+		theBox.grid(column = 0, row = forGui.gridR, columnspan = 2, rowspan = 4)
+		forGui.gridR = forGui.gridR + 4
+		forGui.argPassFlavs.append(self)
+		forGui.argPassCaps.append([argD, theNam, theBox, theLab])
+	def getGUIArgTexts(self,forGui,forData):
+		toRet = []
+		curRetOpts = forData[2].get('1.0', tkinter.END).split("\n")
+		curSigOn = 0
+		for cv in curRetOpts:
+			cvs = cv.strip()
+			if len(cvs) == 0:
+				continue
+			if curSigOn == 0:
+				toRet.append(forData[0].sigils[0])
+				curSigOn = 1
+			if (curSigOn > 1) and (len(cvs) >= 2) and (cvs[0] == '-') and (cvs[1] == '-'):
+				toRet.append("--.-")
+				toRet.append(forData[0].sigils[0])
+				toRet.append(cvs)
+				curSigOn = 0
+			else:
+				toRet.append(cvs)
+				curSigOn = 2
 		return toRet
 
 
@@ -433,6 +519,49 @@ class ArgumentFlavorStringVecFileRead(ArgumentFlavor):
 		return toRet
 
 
+class ArgumentFlavorStringGreedVecFileRead(ArgumentFlavor):
+	def manpageSynopMang(self,argD):
+		return "[\\fB" + manSan(argD.sigils[0]) + "\\fR \\fIFILE*\\fR]"
+	def makeArgGUI(self,forGui,argD):
+		theNam = tkinter.Label(forGui.myCanvas, text = argD.name)
+		theNam.grid(column = 0, row = forGui.gridR)
+		theLab = tkinter.Label(forGui.myCanvas, text = argD.summary)
+		theLab.grid(column = 3, row = forGui.gridR)
+		theBox = tkinter.scrolledtext.ScrolledText(forGui.myCanvas, height = 4, width = 40)
+		theBox.grid(column = 1, row = forGui.gridR, columnspan = 2, rowspan = 4)
+		forGui.gridR = forGui.gridR + 4
+		allExts = parseFileExtensions(argD.extras)[0]
+		theBtn = None
+		if len(allExts) > 0:
+			theBtn = tkinter.Button(forGui.myCanvas, text='Browse', command = lambda: forGui.updateMultiFileName(theBox, tkinter.filedialog.askopenfilenames(title = argD.name, filetypes = tuple([(cv, "*" + cv) for cv in allExts]) )))
+		else:
+			theBtn = tkinter.Button(forGui.myCanvas, text='Browse', command = lambda: forGui.updateMultiFileName(theBox, tkinter.filedialog.askopenfilenames(title = argD.name )))
+		theBtn.grid(column = 3, row = forGui.gridR)
+		forGui.gridR = forGui.gridR + 1
+		forGui.argPassFlavs.append(self)
+		forGui.argPassCaps.append([argD, theNam, theBox, theBtn, theLab])
+	def getGUIArgTexts(self,forGui,forData):
+		toRet = []
+		curRetOpts = forData[2].get('1.0', tkinter.END).split("\n")
+		curSigOn = 0
+		for cv in curRetOpts:
+			cvs = cv.strip()
+			if len(cvs) == 0:
+				continue
+			if curSigOn == 0:
+				toRet.append(forData[0].sigils[0])
+				curSigOn = 1
+			if (curSigOn > 1) and (len(cvs) >= 2) and (cvs[0] == '-') and (cvs[1] == '-'):
+				toRet.append("--.-")
+				toRet.append(forData[0].sigils[0])
+				toRet.append(cvs)
+				curSigOn = 0
+			else:
+				toRet.append(cvs)
+				curSigOn = 2
+		return toRet
+
+
 class ArgumentFlavorStringFileWrite(ArgumentFlavor):
 	def manpageSynopMang(self,argD):
 		return "\\fB" + manSan(argD.sigils[0]) + "\\fR \\fIFILE\\fR"
@@ -495,6 +624,49 @@ class ArgumentFlavorStringVecFileWrite(ArgumentFlavor):
 				continue
 			toRet.append(forData[0].sigils[0])
 			toRet.append(cv.strip())
+		return toRet
+
+
+class ArgumentFlavorStringGreedVecFileWrite(ArgumentFlavor):
+	def manpageSynopMang(self,argD):
+		return "[\\fB" + manSan(argD.sigils[0]) + "\\fR \\fIFILE*\\fR]"
+	def makeArgGUI(self,forGui,argD):
+		theNam = tkinter.Label(forGui.myCanvas, text = argD.name)
+		theNam.grid(column = 0, row = forGui.gridR)
+		theLab = tkinter.Label(forGui.myCanvas, text = argD.summary)
+		theLab.grid(column = 3, row = forGui.gridR)
+		theBox = tkinter.scrolledtext.ScrolledText(forGui.myCanvas, height = 4, width = 40)
+		theBox.grid(column = 1, row = forGui.gridR, columnspan = 2, rowspan = 4)
+		forGui.gridR = forGui.gridR + 4
+		allExts = parseFileExtensions(argD.extras)[0]
+		theBtn = None
+		if len(allExts) > 0:
+			theBtn = tkinter.Button(forGui.myCanvas, text='Browse', command = lambda: forGui.updateMultiFileName(theBox, tkinter.filedialog.asksaveasfilename(title = argD.name, filetypes = tuple([(cv, "*" + cv) for cv in allExts]), defaultextension="*.*" )))
+		else:
+			theBtn = tkinter.Button(forGui.myCanvas, text='Browse', command = lambda: forGui.updateMultiFileName(theBox, tkinter.filedialog.asksaveasfilename(title = argD.name )))
+		theBtn.grid(column = 3, row = forGui.gridR)
+		forGui.gridR = forGui.gridR + 1
+		forGui.argPassFlavs.append(self)
+		forGui.argPassCaps.append([argD, theNam, theBox, theBtn, theLab])
+	def getGUIArgTexts(self,forGui,forData):
+		toRet = []
+		curRetOpts = forData[2].get('1.0', tkinter.END).split("\n")
+		curSigOn = 0
+		for cv in curRetOpts:
+			cvs = cv.strip()
+			if len(cvs) == 0:
+				continue
+			if curSigOn == 0:
+				toRet.append(forData[0].sigils[0])
+				curSigOn = 1
+			if (curSigOn > 1) and (len(cvs) >= 2) and (cvs[0] == '-') and (cvs[1] == '-'):
+				toRet.append("--.-")
+				toRet.append(forData[0].sigils[0])
+				toRet.append(cvs)
+				curSigOn = 0
+			else:
+				toRet.append(cvs)
+				curSigOn = 2
 		return toRet
 
 
@@ -561,14 +733,19 @@ argFlavorMap[("flag","")] = ArgumentFlavorFlag()
 argFlavorMap[("enum","")] = ArgumentFlavorEnum()
 argFlavorMap[("int","")] = ArgumentFlavorInt()
 argFlavorMap[("intvec","")] = ArgumentFlavorIntVec()
+argFlavorMap[("intvecg","")] = ArgumentFlavorIntGreedVec()
 argFlavorMap[("float","")] = ArgumentFlavorFloat()
 argFlavorMap[("floatvec","")] = ArgumentFlavorFloatVec()
+argFlavorMap[("floatvecg","")] = ArgumentFlavorFloatGreedVec()
 argFlavorMap[("string","")] = ArgumentFlavorString()
 argFlavorMap[("stringvec","")] = ArgumentFlavorStringVec()
+argFlavorMap[("stringvecg","")] = ArgumentFlavorStringGreedVec()
 argFlavorMap[("string","fileread")] = ArgumentFlavorStringFileRead()
 argFlavorMap[("stringvec","fileread")] = ArgumentFlavorStringVecFileRead()
+argFlavorMap[("stringvecg","fileread")] = ArgumentFlavorStringGreedVecFileRead()
 argFlavorMap[("string","filewrite")] = ArgumentFlavorStringFileWrite()
 argFlavorMap[("stringvec","filewrite")] = ArgumentFlavorStringVecFileWrite()
+argFlavorMap[("stringvecg","filewrite")] = ArgumentFlavorStringGreedVecFileWrite()
 argFlavorMap[("string","folderread")] = ArgumentFlavorStringFolderRead()
 argFlavorMap[("string","folderwrite")] = ArgumentFlavorStringFolderWrite()
 
