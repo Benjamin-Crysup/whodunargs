@@ -92,18 +92,18 @@ library(R6)
 
 .argopt.help.dumpToStdout = function(toDump){
 	# R doesn't have an easy way to write binary to stdout
-	# OS dependent BULLSHIT
-	con = NA
+	# Windows doesn't have an equivalent to /dev/stdout (CON = /dev/tty)
 	if(Sys.info()['sysname'] == "Windows"){
-		con = "CON"
+		# Thank you Simon Kissane
+		# Holy Shit, this should not be this hard.
+		con = pipe("powershell.exe -c \"[Console]::OpenStandardInput().CopyTo([Console]::OpenStandardOutput())\"","wb")
+		writeBin(toDump,con)
+		close(con)
 	} else {
-		con = "/dev/stdout"
+		con = file("/dev/stdout", "wb", raw=TRUE)
+		writeBin(toDump,con)
+		close(con)
 	}
-	con = file(con, "wb", raw=TRUE)
-	# write
-	writeBin(toDump,con)
-	# FFS, this will break all sorts of stuff if used wrongly
-	close(con)
 }
 
 #' Base class for argument description.
